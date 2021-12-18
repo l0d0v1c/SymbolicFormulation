@@ -1,5 +1,5 @@
 # Formulation Symbolic language
-
+![alt text](image.jpg | width=100)
 ## Dependencies
 FSL is based on "Formulate" library available at https://github.com/l0d0v1c/formulate and the local unit FSL.py
 
