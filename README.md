@@ -534,7 +534,7 @@ This published version is limited to
 
 A MyBinder instance allows to run this version:
 
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/l0d0v1c/SymbolicFormulation/HEAD?filepath=readme.ipynb)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/l0d0v1c/SymbolicFormulation/HEAD?labpath=readme.ipynb)
 
 
 # Licence
