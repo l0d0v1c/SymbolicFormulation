@@ -1,6 +1,6 @@
 # Formulation Symbolic language
-![alt text](image.jpg | width=100)
-## Dependencies
+<img src="https://github.com/l0d0v1c/SymbolicFormulation/blob/main/image.jpg" alt="SymbolicFormulation" width="100" >
+
 FSL is based on "Formulate" library available at https://github.com/l0d0v1c/formulate and the local unit FSL.py
 
 
