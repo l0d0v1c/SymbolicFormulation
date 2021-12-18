@@ -542,6 +542,13 @@ This published version is limited to
 * unordered ingredients: A development version is in progress to take into account a complete sequential manufacturing process
 * The cocktail generation by autoencoder's latent space exploration has been successfully tested for cocktails but it has to be assessed in other contexts
 
+## Running test
+
+A MyBinder instance allows to run this version:
+
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/l0d0v1c/SymbolicFormulation/HEAD?filepath=readme.ipynb)
+
+
 # Licence
 MIT
 
