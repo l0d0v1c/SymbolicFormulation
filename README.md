@@ -542,6 +542,19 @@ MIT
 
 2021/2022 https://www.rd-mediation.com
 
+# Cite
+```
+@misc{Brunet2021,
+  author = {Brunet, L.E.},
+  title = {Symbolic formulation: an encoder for formulations focused on deep autoencoders},
+  year = {2021},
+  doi ={10.17601/rdmediation.2021.2}
+  publisher = {GitHub},
+  journal = {GitHub repository},
+  howpublished = {\url{https://github.com/l0d0v1c/SymbolicFormulation}},
+  commit = {bd34a46e2581e7e73878d5826ca272c1231df0fa}
+}
+```
 
 ```python
 
