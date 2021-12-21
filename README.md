@@ -127,7 +127,7 @@ f.dict
 
 
 ### Formulation list with several quantities
-To train an autoencoder we need a list of formulations having the same ingredients at several quantities. During the FSL initialisation process you can define a "dose". In formulation recipes, the quantity of each component is often given in units (oz, parts..). FSL use the same representation:
+To train an autoencoder we need a list of formulations having the same ingredients at several quantities. During the FSL initialisation process you can define a "dose". In formulation recipes, the quantity of each component is often given in units (oz, parts..). FSL uses the same representation:
 
     formulationsymboliclanguage(formulae,granulo=5)
 
