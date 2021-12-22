@@ -1,4 +1,7 @@
 from formulate.components import components
+import pandas as pd
+import numpy as np
+
 class formulationsymboliclanguage():
     def __init__(self,formulae,granulo=10,verbose=False):
         self.major=list("ABCDEFGHIJKLMNOPQRSTUVWXYZ")
@@ -97,6 +100,34 @@ class formulationsymboliclanguage():
        
 
         return listcompo
+
+class onehot():
+    def __init__(self,mots):
+        self.maxlen=max(len(w) for w in mots)
+        self.mots=[m.ljust(self.maxlen) for m in mots]
+        self.alpha=list(set(''.join(self.mots)))
+        self.l2i={l:i for i,l in enumerate(self.alpha)}
+        self.i2l={i:l for l,i in self.l2i.items()}
+    def encode(self,m):
+        res=[]
+        for mot in m:
+            resm=[]
+            for lettre in mot:
+                l=[0 for _ in range(len(self.alpha))]
+                l[self.l2i[lettre]]=1
+                resm.append(l)
+            res.append(resm)
+        return res
+    def trainset(self):
+        return pd.DataFrame([np.array(self.encode(w)).reshape(self.maxlen*len(self.l2i),) for w in self.mots ])
+    def decode(self,oh):
+        mots=[]
+        for l in oh:
+            mot=""
+            for unit in l:
+                mot+=self.i2l[unit.index(1)]
+            mots.append(mot)
+        return mots
             
                     
             
