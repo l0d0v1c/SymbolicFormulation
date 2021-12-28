@@ -2,3 +2,6 @@
 .DS_Store
 .ipynb_checkpoints/readme-checkpoint.ipynb
 __pycache__/FSL.cpython-38.pyc
+.ipynb_checkpoints/vae-checkpoint.ipynb
+__pycache__/FSL.cpython-39.pyc
+__pycache__/rdmediationvaert.cpython-39.pyc

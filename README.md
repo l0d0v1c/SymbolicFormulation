@@ -524,6 +524,540 @@ display(listcompo[0].formulationlist)
 </table>
 </div>
 
+# Assessment in a variational autoencoder 
+Assessment of FSL language in an autoencoder. In this version, we will reload a pretrained neural network.
+## Reloading the pretrained neural network
+
+
+```python
+#!pip install tensorflow pandas textdistance
+import pickle,gzip,sys
+from rdmediationvaert import AE
+import pandas as pd
+cocktails,encodeur=pickle.load(gzip.open("cocktails.pklz"))
+dataset=[]
+for m in encodeur:
+    if len(m)>2:
+        dataset.append(m)
+print(f"{len(dataset)} formulae for training")
+model=AE(name='cocktailsvae')
+model.reload('cocktailsvae')
+```
+
+ 
+
+## Load a formula
+
+
+```python
+c=dataset[0]
+print(f"FSL encoded formula : {c}")
+print("Decoded formula:")
+cocktails.decode([c])[0].formulationlist
+```
+
+    FSL encoded formula : AAAAAAAABBBBαβ
+    Decoded formula: AAAAAAAABBBBαβ
+
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Component</th>
+      <th>Rate</th>
+      <th>minor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Light Rum</td>
+      <td>0.633</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Lemon Juice</td>
+      <td>0.365</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Passion Fruit Syrup</td>
+      <td>0.001</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Lime Juice</td>
+      <td>0.001</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Formulation</td>
+      <td>1.000</td>
+      <td>Non additive</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+## Find it in the latent space
+
+
+```python
+latent=model.encode(c)
+latent
+```
+
+
+
+
+    array([[ 1.3890834 , -0.13870159, -0.00822407, -0.00487889, -0.46605322,
+            -0.79323816,  0.38904732,  0.3041486 ,  0.11699133,  0.273327  ,
+            -0.09223687,  0.1689527 ,  0.15887997, -0.02809681, -0.21979149,
+             1.4856585 ,  2.5984235 ,  0.10420097, -0.10993379,  0.44843948,
+             0.31948787, -0.09654102,  0.31869823, -0.6928068 , -0.618227  ,
+            -1.1512997 , -0.58362055,  0.09300974,  0.04692227, -0.29087883,
+             0.08301675, -0.15936494]], dtype=float32)
+
+
+
+## Rebuild it back
+
+
+```python
+model.decode(latent)
+```
+
+ 
+
+
+
+    'AAAAAAAABBBBαβ'
+
+
+
+## Assess performance
+
+
+```python
+rebuilt=[model.decode(model.encode(formula)) for formula in dataset]
+
+comparison=pd.DataFrame([[original,new] for original,new in zip(dataset,rebuilt)],
+                       columns=["Formula","Rebuilt"])
+comparison.head(20)
+```
+
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Formula</th>
+      <th>Rebuilt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>AAAAAAAABBBBαβ</td>
+      <td>AAAAAAAABBBBαβ</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AAAAAAAACCDγ</td>
+      <td>AAAAAAAACCDγ</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>AAAAAAAADDEE</td>
+      <td>AAAAAAAADDDE</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>FFFFFFFFFFFζηθι</td>
+      <td>FFFFFFFFFFFζηθι</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>GGGGGGHHHIIκλ</td>
+      <td>GGGGGGHHHIIκλ</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>AAAAAAAAAAAμν</td>
+      <td>AAAAAAAAAAAον</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>AAAAAAAJJJJJβξ</td>
+      <td>AAAAAAAJJJJJβξ</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>AAAAAAAAAAAοπ</td>
+      <td>AAAAAAAAAAAοπ</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>HHHHHIIIIIIρ</td>
+      <td>HHHHHIIIIIIρ</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>HHHHHHHHHHHστυφ</td>
+      <td>HHHHHHHHHHHστυφ</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>DDDDDKKKKKKχ</td>
+      <td>DDDDDKKKKKKχ</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>AAABBBBCCKKψ</td>
+      <td>AAABBBBCKKKψ</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>CCCKKKKLMω</td>
+      <td>CCCKKKKLMω</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>CCMMMMMNNN</td>
+      <td>CCMMMMMNNN</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>BBBBMMMMNN</td>
+      <td>BBBBMMMMNN</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>BBBBMMMNNNN</td>
+      <td>BBBBMMMNNNN</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>DDDMMMMMNNN</td>
+      <td>DDDMMMMMNNN</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>KKKMMMMMMMM</td>
+      <td>KKKMMMMMMMM</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>GGGGGGIIOOO</td>
+      <td>GGGGGGIIOOO</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>CCCMMMNNNN</td>
+      <td>CCCMMMNNNN</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+## Sørensen text distance
+
+
+
+```python
+from statistics import mean 
+import textdistance
+train=mean([textdistance.sorensen(orig,new) 
+            for orig,new in zip(dataset[:663],rebuilt[:663])])
+test=mean([textdistance.sorensen(orig,new) 
+            for orig,new in zip(dataset[663:],rebuilt[663:])])
+print(f"Sørensen similarity for training set: {train*100:.2f} %")
+print(f"Sørensen similarity for test set: {test*100:.2f} %")
+```
+
+    Sørensen similarity for training set: 97.79 %
+    Sørensen similarity for test set: 97.95 %
+
+
+## Examples of use
+### Ingredient replacement
+Select a Formula
+
+
+```python
+c=dataset[2]
+print(f"FSL encoded formula : {c}")
+print("Decoded formula:")
+cocktails.decode([c])[0].formulationlist
+```
+
+    FSL encoded formula : AAAAAAAADDEE
+    Decoded formula: AAAAAAAADDEE
+
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Component</th>
+      <th>Rate</th>
+      <th>minor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Light Rum</td>
+      <td>0.594</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Juice of a Lime</td>
+      <td>0.206</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Powdered Sugar</td>
+      <td>0.200</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Formulation</td>
+      <td>1.000</td>
+      <td>Non additive</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+### Find an ingredient in the latent space
+
+
+```python
+cc="E"
+cocktails.decode([cc])[0].formulationlist
+```
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Component</th>
+      <th>Rate</th>
+      <th>minor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Powdered Sugar</td>
+      <td>1.0</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Formulation</td>
+      <td>1.0</td>
+      <td>Non additive</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+B_latent=model.encode(cc)
+B_latent
+```
+
+
+
+
+    array([[ 0.07749687,  0.06850921, -0.12150503,  0.3076481 ,  0.21906431,
+             0.36602306, -0.23047219, -0.0314557 , -0.11696757,  0.30448595,
+             0.18171558, -0.35609794,  0.08173011, -0.49204585,  0.01729178,
+            -0.84248275, -0.36493543,  0.2195618 ,  0.13346879, -1.3478712 ,
+            -0.31198242, -0.09321836,  0.47335526,  0.7934676 ,  0.14510019,
+             1.1782285 ,  0.26321998,  0.22008964, -0.24455835,  0.29434013,
+             0.1674507 , -0.0353418 ]], dtype=float32)
+
+
+
+### Remove the ingredient and brew a new cocktail
+
+
+```python
+new=model.decode(latent-B_latent)
+new=''.join(sorted(new))
+new
+```
+
+
+
+
+    'AAAAAAAABBBBαβ'
+
+
+
+
+```python
+cocktails.decode([new])[0].formulationlist
+
+```
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Component</th>
+      <th>Rate</th>
+      <th>minor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Light Rum</td>
+      <td>0.633</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Lemon Juice</td>
+      <td>0.365</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Passion Fruit Syrup</td>
+      <td>0.001</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Lime Juice</td>
+      <td>0.001</td>
+      <td>True</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Formulation</td>
+      <td>1.000</td>
+      <td>Non additive</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+## Create a new cocktail
+
+### Locate a random latent space vector
+
+
+```python
+brandnew=model.generate()
+cocktails.decode([brandnew])[0].formulationlist
+```
+
+
+
+
+<div>
+
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>Component</th>
+      <th>Rate</th>
+      <th>minor</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>Sweet Vermouth</td>
+      <td>0.230</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>Triple Sec</td>
+      <td>0.124</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>Powdered Sugar</td>
+      <td>0.141</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>Gin</td>
+      <td>0.505</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>Formulation</td>
+      <td>1.000</td>
+      <td>Non additive</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+```python
+
+```
+
 
 # Limits of the current version
 This published version is limited to
