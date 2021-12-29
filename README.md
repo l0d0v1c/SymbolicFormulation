@@ -863,7 +863,7 @@ cocktails.decode([c])[0].formulationlist
 
 
 ```python
-cc="E"
+cc="EEEEE"
 cocktails.decode([cc])[0].formulationlist
 ```
 
@@ -909,14 +909,17 @@ B_latent
 
 
 
-    array([[ 0.07749687,  0.06850921, -0.12150503,  0.3076481 ,  0.21906431,
-             0.36602306, -0.23047219, -0.0314557 , -0.11696757,  0.30448595,
-             0.18171558, -0.35609794,  0.08173011, -0.49204585,  0.01729178,
-            -0.84248275, -0.36493543,  0.2195618 ,  0.13346879, -1.3478712 ,
-            -0.31198242, -0.09321836,  0.47335526,  0.7934676 ,  0.14510019,
-             1.1782285 ,  0.26321998,  0.22008964, -0.24455835,  0.29434013,
-             0.1674507 , -0.0353418 ]], dtype=float32)
-
+    array([[-6.45386398e-01,  4.85044532e-02,  8.29209983e-02,
+             3.41801457e-02,  7.71266997e-01,  5.36016107e-01,
+             2.08929375e-01,  7.18495250e-02, -3.53245795e-01,
+             1.99218929e-01,  4.12274413e-02, -8.70564654e-02,
+             1.17326975e-01, -2.18493879e-01, -2.59110242e-01,
+            -4.27905977e-01, -2.94935942e-01, -1.74721386e-02,
+             6.90681040e-02, -2.25325441e+00, -1.64082974e-01,
+            -7.02380240e-02,  4.02717918e-01,  6.12576544e-01,
+            -1.44361891e-03,  1.13856137e+00,  2.85031438e-01,
+             5.24719916e-02, -2.52416462e-01,  6.97316080e-02,
+             2.07967505e-01, -2.75261998e-02]], dtype=float32)
 
 
 ### Remove the ingredient and brew a new cocktail
@@ -931,7 +934,7 @@ new
 
 
 
-    'AAAAAAAABBBBαβ'
+    'AAAAAAABBBBFαβ'
 
 
 
@@ -945,7 +948,6 @@ cocktails.decode([new])[0].formulationlist
 
 
 <div>
-
 <table border="1" class="dataframe">
   <thead>
     <tr style="text-align: right;">
@@ -959,29 +961,35 @@ cocktails.decode([new])[0].formulationlist
     <tr>
       <th>0</th>
       <td>Light Rum</td>
-      <td>0.633</td>
+      <td>0.511</td>
       <td>False</td>
     </tr>
     <tr>
       <th>1</th>
       <td>Lemon Juice</td>
-      <td>0.365</td>
+      <td>0.335</td>
       <td>False</td>
     </tr>
     <tr>
       <th>2</th>
+      <td>Pineapple Juice</td>
+      <td>0.153</td>
+      <td>False</td>
+    </tr>
+    <tr>
+      <th>3</th>
       <td>Passion Fruit Syrup</td>
       <td>0.001</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>3</th>
+      <th>4</th>
       <td>Lime Juice</td>
       <td>0.001</td>
       <td>True</td>
     </tr>
     <tr>
-      <th>4</th>
+      <th>5</th>
       <td>Formulation</td>
       <td>1.000</td>
       <td>Non additive</td>
